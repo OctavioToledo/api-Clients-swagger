@@ -1,4 +1,5 @@
 package com.beprojects.api_rest_prop.controller;
+import com.beprojects.api_rest_prop.exception.ResourceNotFoundException;
 import com.beprojects.api_rest_prop.model.dto.ClienteDto;
 import com.beprojects.api_rest_prop.model.entity.Cliente;
 import com.beprojects.api_rest_prop.model.payload.MessageResponse;
@@ -108,10 +109,7 @@ public class ClienteController {
     public ResponseEntity<?> showById(@PathVariable Long id){
         Cliente cliente =  iClienteService.findById(id);
         if (cliente == null){
-            return new ResponseEntity<>(MessageResponse.builder()
-                    .message("El registro que busca no se encuentra")
-                    .object(null)
-                    .build(), HttpStatus.NOT_FOUND);
+            throw new ResourceNotFoundException("cliente", "id", id);
         }
         return new ResponseEntity<>(
                 MessageResponse.builder()
